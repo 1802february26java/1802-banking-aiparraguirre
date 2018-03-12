@@ -16,7 +16,7 @@ public class Client {
 
 	public Client(int c_id, String fName, String lName, String username, String password, double balance) {
 		super();
-		C_id = c_id;
+		this.C_id = c_id;
 		this.fName = fName;
 		this.lName = lName;
 		this.username = username;
@@ -121,6 +121,12 @@ public class Client {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Client [C_id=" + C_id + ", fName=" + fName + ", lName=" + lName + ", username=" + username
+				+ ", password=" + password + ", balance=" + balance + "]";
 	}
 	
 

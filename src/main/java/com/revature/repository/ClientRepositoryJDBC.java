@@ -27,8 +27,6 @@ public class ClientRepositoryJDBC implements ClientRepository{
 			
 			logger.trace("Getting CLIENT by username and password.");
 			PreparedStatement statement = connection.prepareStatement(sql);
-	
-			logger.trace(username +"  " + password);
 			
 			statement.setString(++parameterIndex, username);
 			statement.setString(++parameterIndex, password);
@@ -56,45 +54,10 @@ public class ClientRepositoryJDBC implements ClientRepository{
 		return null;
 	}	
 	
-	/*
-	public boolean updateBalance(String username, String password, double value){
-		try(Connection connection = BankConnection.getConnection()){
-			int parameterIndex = 0;
-			// write this part first (under this comment)
-			
-			String sql = "UPDATE CLIENT SET C_BALANCE = ? WHERE C_USERNAME = ? AND C_PASSWORD = ?"; 
-			
-			logger.trace("Updating Account Balance.");
-			
-			// now we can get the prepared statement object from the connection object
-			PreparedStatement statement = connection.prepareStatement(sql);
-			
-			statement.setLong(++parameterIndex, client.getC_id());
-			statement.setString(++parameterIndex, client.getfName());
-			statement.setString(++parameterIndex, client.getlName());
-			statement.setInt(++parameterIndex, client.getAccountId());
-			statement.setString(++parameterIndex, client.getUsername());
-			statement.setString(++parameterIndex, client.getPassword());
-			
-			
-			logger.trace("Parameters for insertion of Celebrity set.");
-			if(statement.executeUpdate()>0){
-				logger.trace("Celebrity was inserted into table.");
-				return true;
-			}
-							
-		}catch(SQLException e){
-			logger.error("Exception thrown while inserting data",e);
-		}
 	
-	
-		return false;
-		
-	}
 
-*/
 	@Override
-	public boolean updateWithdrawel(String username, double newBalance) {
+	public boolean updateBalance(String username, double newBalance) {
 		try(Connection connection = BankConnection.getConnection()){
 			
 			int parameterIndex = 0;
@@ -107,7 +70,6 @@ public class ClientRepositoryJDBC implements ClientRepository{
 			statement.setDouble(++parameterIndex, newBalance);
 			statement.setString(++parameterIndex, username);
 
-			logger.trace("after setting setString to statement.");
 			statement.executeQuery();	
 				
 		}catch(SQLException e){
@@ -118,13 +80,6 @@ public class ClientRepositoryJDBC implements ClientRepository{
 		return false;
 	}	
 
-	
-	public boolean updateDeposit(String username, double amount){
-		
-		return false;
-		
-	}
-	
 	public Set<Client> selectAll(){
 		try(Connection connection = BankConnection.getConnection()){
 			String sql="SELECT * FROM CLIENT";
@@ -146,7 +101,7 @@ public class ClientRepositoryJDBC implements ClientRepository{
 						result.getString("C_PASSWORD"),
 						result.getDouble("C_BALANCE")
 						));
-				
+			//	System.out.println(set);
 			}
 			// return set
 			return set;
@@ -159,7 +114,7 @@ public class ClientRepositoryJDBC implements ClientRepository{
 
 	public static void main(String[] args) {
 		ClientRepository repository = new ClientRepositoryJDBC();// instance
-		logger.info(repository.selectAll());
+		System.out.println(" select all: "+ repository.selectAll());
 		logger.info(repository.findByUsernameAndPassword("SONMAC86","1234"));
 	
 	}

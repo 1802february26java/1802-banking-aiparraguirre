@@ -15,8 +15,7 @@ public class BankConnection {
 		String url = "jdbc:oracle:thin:@bank.ckmmgczymsq9.us-east-1.rds.amazonaws.com:1521:ORCL";
 		String username = "BANK_ADMIN";
 		String password = "PASS";
-		System.out.println("connection info: " + url + username + password);
-		
+			
 		return DriverManager.getConnection(url, username, password);
 	}
 		
