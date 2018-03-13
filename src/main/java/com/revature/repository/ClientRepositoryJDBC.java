@@ -50,7 +50,7 @@ public class ClientRepositoryJDBC implements ClientRepository{
 				logger.error("Error while selecting client by credentials.", e);
 			}
 			
-		logger.trace("returning null");
+		//logger.trace("returning null");
 		return null;
 	}	
 	
@@ -62,7 +62,7 @@ public class ClientRepositoryJDBC implements ClientRepository{
 			
 			int parameterIndex = 0;
 			
-			String sql="UPDATE CLIENT SET BALANCE = ? WHERE C_USERNAME = ?";
+			String sql="UPDATE CLIENT SET C_BALANCE = ? WHERE C_USERNAME = ?";
 			
 			logger.trace("Getting CLIENT by username and password.");
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -101,12 +101,12 @@ public class ClientRepositoryJDBC implements ClientRepository{
 						result.getString("C_PASSWORD"),
 						result.getDouble("C_BALANCE")
 						));
-			//	System.out.println(set);
+			
 			}
-			// return set
+			
 			return set;
 		}catch(SQLException e){
-			logger.error("Error while selecting all celebrities", e);
+			logger.error("Error while selecting all clients", e);
 		}
 		return null;
 }
@@ -114,8 +114,8 @@ public class ClientRepositoryJDBC implements ClientRepository{
 
 	public static void main(String[] args) {
 		ClientRepository repository = new ClientRepositoryJDBC();// instance
-		System.out.println(" select all: "+ repository.selectAll());
-		logger.info(repository.findByUsernameAndPassword("SONMAC86","1234"));
+		//System.out.println(" select all: "+ repository.selectAll());
+		//logger.info(repository.findByUsernameAndPassword("SNMAC86","1234"));
 	
 	}
 }

@@ -3,62 +3,103 @@ package com.revature.service;
 import java.util.Scanner;
 
 import com.revature.model.Client;
+import com.revature.repository.ClientRepository;
+import com.revature.repository.ClientRepositoryJDBC;
 
-public class Console implements Verification {
+public class Console{
 
-	
-	@Override
-	public void checkCredentials() {
-		// to call the select from the repository and pass in specific values and get the table if true or return false if user is missing 
+	public static void main(String[] args) {
+		
 		String username;
 		String password;
-		Client client = new Client();
-		Scanner scanner = new Scanner(System.in);
+		int loginSuccessFlag = 0;
+		int menuOption;
+		double amount;
+		double newBalance;
+		Client client;
+		ClientRepository repository = new ClientRepositoryJDBC();
 		
-		try{
+		Scanner scanner= new Scanner(System.in);
+				
+		do{
+			
+				
+			System.out.println("Please log in.");
+			System.out.print("Username:");
+			username=scanner.nextLine();
+			System.out.print("Password:");
+			password = scanner.nextLine();
+			System.out.println("--------------Checking---------------");
+					
+			client = repository.findByUsernameAndPassword(username, password);
+			
+			if(client == null ){
+				System.out.println("Username or Password incorrect.");
+				System.out.println("Username and Password case sensitive.");
+				System.out.println("----------Please try again-----------");
+				
+			}else{
+
+				System.out.println("Log in successful");
+				loginSuccessFlag = 1;
+			}
+			
+		}while(loginSuccessFlag != 1);
 		
-		System.out.println("Please log in.");
-		System.out.print("Username:");
-		username=scanner.nextLine();
-		System.out.println("-------------------------------------");
-		System.out.print("Password:");
-		System.out.println();
-		password = scanner.nextLine();
-		System.out.println("--------------Checking---------------");
+		do{
 		
-		client.setUsername(username);
-		client.setPassword(password);
+		System.out.println("==============================================");
+		System.out.println("Menu options:");
+		System.out.println("Deposit enter 1");
+		System.out.println("Withdrawel enter 2");
+		System.out.println("To Log out of your Account enter 3");
+		System.out.print("Option:  ");
+			
+			menuOption=scanner.nextInt();
 		
-		}finally{
-			scanner.close();
+		System.out.println("==============================================");
+		
+		switch(menuOption){
+			case 1:
+				System.out.print("How much would you like to deposit?  ");
+				amount = scanner.nextDouble();
+				System.out.println("==============================================");
+				
+				newBalance = client.getBalance() + amount;
+				repository.updateBalance(client.getUsername(), newBalance);
+				client = repository.findByUsernameAndPassword(username, password);
+				
+				System.out.println("Account : " + client.getlName() + ", " 
+						+ client.getfName() + "|| Balance = " + client.getBalance());
+				
+				break;
+			
+			case 2:
+				
+				System.out.print("How much would you like to Withdraw?  ");
+				amount = scanner.nextDouble();
+				System.out.println("==============================================");
+				
+				newBalance = client.getBalance() - amount;
+				
+				repository.updateBalance(client.getUsername(), newBalance);
+				client = repository.findByUsernameAndPassword(username, password);
+				
+				System.out.println("Account : " + client.getlName() + ", " 
+						+ client.getfName() + " Balance = " + client.getBalance());
+				break;
+				
+			case 3:
+				System.out.println("Thank you for banking with us.");
+				break;
 		}
 		
-		System.out.println("username: " + client.getUsername() 
-					+ " password: " + client.getPassword());
-		
+		}while(menuOption !=3);
+				
+		scanner.close();
+		System.exit(0);
 	}
 
-	@Override
-	public void checkBalance() {
-		// will use the select method and pull the balance depending the user account
-		
-	}
-
-	@Override
-	public void makeDeposit() {
-		// increment the balance according to the amount made will need to call the update method
-		
-	}
-
-	@Override
-	public void makeWithdrawel() {
-		// same as the make deposit except we will decrement the account
-		
-	}
-
-public static void main(String[] args) {
-	Console console = new Console();
-	console.checkCredentials();
 }
-}
+
 
