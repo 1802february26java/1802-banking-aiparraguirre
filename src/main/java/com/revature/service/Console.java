@@ -2,6 +2,8 @@ package com.revature.service;
 
 import java.util.Scanner;
 
+import com.revature.exception.NoNegativeNumbers;
+import com.revature.exception.TooManyLoginAttempts;
 import com.revature.model.Client;
 import com.revature.repository.ClientRepository;
 import com.revature.repository.ClientRepositoryJDBC;
@@ -12,17 +14,20 @@ public class Console{
 		
 		String username;
 		String password;
+		
+		int attempt = 0;
 		int loginSuccessFlag = 0;
 		int menuOption;
 		double amount;
 		double newBalance;
+		
 		Client client;
 		ClientRepository repository = new ClientRepositoryJDBC();
 		
 		Scanner scanner= new Scanner(System.in);
-				
+		
+		//---------------Log in set up------------------------------------------------------------
 		do{
-			
 				
 			System.out.println("Please log in.");
 			System.out.print("Username:");
@@ -37,7 +42,11 @@ public class Console{
 				System.out.println("Username or Password incorrect.");
 				System.out.println("Username and Password case sensitive.");
 				System.out.println("----------Please try again-----------");
+				++attempt;
 				
+				if(attempt >3){
+					throw new TooManyLoginAttempts("User attempted to Login too many times");
+				}
 			}else{
 
 				System.out.println("Log in successful");
@@ -46,6 +55,7 @@ public class Console{
 			
 		}while(loginSuccessFlag != 1);
 		
+		//-----------------Operations to be done to table (Balance)--------------------------------		
 		do{
 		
 		System.out.println("==============================================");
@@ -63,14 +73,22 @@ public class Console{
 			case 1:
 				System.out.print("How much would you like to deposit?  ");
 				amount = scanner.nextDouble();
+				
+
+				if(amount < 0){
+					
+					throw new NoNegativeNumbers("Warning user attempting to input a negative number.");
+				}
+				
 				System.out.println("==============================================");
 				
 				newBalance = client.getBalance() + amount;
+				
 				repository.updateBalance(client.getUsername(), newBalance);
 				client = repository.findByUsernameAndPassword(username, password);
 				
 				System.out.println("Account : " + client.getlName() + ", " 
-						+ client.getfName() + "|| Balance = " + client.getBalance());
+						+ client.getfName() + " | Balance = " + client.getBalance());
 				
 				break;
 			
@@ -80,13 +98,19 @@ public class Console{
 				amount = scanner.nextDouble();
 				System.out.println("==============================================");
 				
-				newBalance = client.getBalance() - amount;
+				if(amount < 0){
+					
+					throw new NoNegativeNumbers("Warning user attempting to input a negative number.");
+					
+				}
 				
+				newBalance = client.getBalance() - amount;
+								
 				repository.updateBalance(client.getUsername(), newBalance);
 				client = repository.findByUsernameAndPassword(username, password);
 				
 				System.out.println("Account : " + client.getlName() + ", " 
-						+ client.getfName() + " Balance = " + client.getBalance());
+						+ client.getfName() + " | Balance = " + client.getBalance());
 				break;
 				
 			case 3:
