@@ -122,12 +122,6 @@ public class Client {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Client [C_id=" + C_id + ", fName=" + fName + ", lName=" + lName + ", username=" + username
-				+ ", password=" + password + ", balance=" + balance + "]";
-	}
 	
 
 }

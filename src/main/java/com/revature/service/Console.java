@@ -88,7 +88,7 @@ public class Console{
 				client = repository.findByUsernameAndPassword(username, password);
 				
 				System.out.println("Account : " + client.getlName() + ", " 
-						+ client.getfName() + " | Balance = " + client.getBalance());
+						+ client.getfName() + " |Balance = " + client.getBalance());
 				
 				break;
 			
@@ -110,7 +110,7 @@ public class Console{
 				client = repository.findByUsernameAndPassword(username, password);
 				
 				System.out.println("Account : " + client.getlName() + ", " 
-						+ client.getfName() + " | Balance = " + client.getBalance());
+						+ client.getfName() + " |Balance = " + client.getBalance());
 				break;
 				
 			case 3:

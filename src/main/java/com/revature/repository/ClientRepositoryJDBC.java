@@ -16,6 +16,13 @@ public class ClientRepositoryJDBC implements ClientRepository{
 
 	private static Logger logger = Logger.getLogger(ClientRepositoryJDBC.class);
 	
+	private static ClientRepositoryJDBC repository = new ClientRepositoryJDBC();
+	
+	public ClientRepositoryJDBC(){}
+	
+	public static ClientRepository getInstance(){
+		return repository;
+	}
 	
 	public Client findByUsernameAndPassword(String username, String password){
 		
@@ -50,7 +57,6 @@ public class ClientRepositoryJDBC implements ClientRepository{
 				logger.error("Error while selecting client by credentials.", e);
 			}
 			
-		//logger.trace("returning null");
 		return null;
 	}	
 	
@@ -87,7 +93,7 @@ public class ClientRepositoryJDBC implements ClientRepository{
 			logger.trace("Getting statement object in get all CLIENT");
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
-			ResultSet result = statement.executeQuery();// returns a result set object
+			ResultSet result = statement.executeQuery();
 			
 			Set<Client> set = new HashSet<>();
 			
@@ -109,15 +115,8 @@ public class ClientRepositoryJDBC implements ClientRepository{
 			logger.error("Error while selecting all clients", e);
 		}
 		return null;
-}
-	
-
-	public static void main(String[] args) {
-		ClientRepository repository = new ClientRepositoryJDBC();// instance
-		//System.out.println(" select all: "+ repository.selectAll());
-		//logger.info(repository.findByUsernameAndPassword("SNMAC86","1234"));
-	
 	}
+	
 }
 
 
